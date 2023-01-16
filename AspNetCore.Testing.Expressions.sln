@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.Expressions", "AspNetCore.Testing.Expressions\AspNetCore.Testing.Expressions.csproj", "{0A6FDD51-128A-4266-A96B-E77929F6FE50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A5568962-395E-4248-B532-BC37CA29F345}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.Expressions.Web", "AspNetCore.Testing.Expressions.Web\AspNetCore.Testing.Expressions.Web.csproj", "{63918B5B-D093-4FFE-89EB-611399D25960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.Expressions.Tests", "AspNetCore.Testing.Expressions.Tests\AspNetCore.Testing.Expressions.Tests.csproj", "{78962E00-8689-49F3-8D3F-BEA33DF8B97B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A6FDD51-128A-4266-A96B-E77929F6FE50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A6FDD51-128A-4266-A96B-E77929F6FE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A6FDD51-128A-4266-A96B-E77929F6FE50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A6FDD51-128A-4266-A96B-E77929F6FE50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63918B5B-D093-4FFE-89EB-611399D25960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63918B5B-D093-4FFE-89EB-611399D25960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63918B5B-D093-4FFE-89EB-611399D25960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63918B5B-D093-4FFE-89EB-611399D25960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63918B5B-D093-4FFE-89EB-611399D25960} = {A5568962-395E-4248-B532-BC37CA29F345}
+		{78962E00-8689-49F3-8D3F-BEA33DF8B97B} = {A5568962-395E-4248-B532-BC37CA29F345}
+	EndGlobalSection
+EndGlobal
