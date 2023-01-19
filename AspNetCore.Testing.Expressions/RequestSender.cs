@@ -37,8 +37,10 @@ internal class RequestSender<T>
         });
 
         await CheckStatusCodeAsync(response);
+        var responseBody = response.Content.Headers.ContentType?.MediaType?.ToUpperInvariant().Contains("JSON") == true
+            ? await response.Content.ReadFromJsonAsync<TResponse>()
+            : (TResponse)Convert.ChangeType(await response.Content.ReadAsStringAsync(), typeof(TResponse));
         
-        var responseBody = await response.Content.ReadFromJsonAsync<TResponse>();
         return responseBody;
     }
 
@@ -73,7 +75,8 @@ internal class RequestSender<T>
             if (routeAttr != null)
             {
                 var expressionValue = InvokeExpression(parameterExpressions[i], parameter.ParameterType);
-                template = template.Replace($"[{parameter.Name}]", expressionValue?.ToString() ?? "");
+                // TODO: {id:type} scenario
+                template = template.Replace($"{{{parameter.Name}}}", expressionValue?.ToString() ?? "");
             }
             if (queryAttr != null)
             {
@@ -84,7 +87,7 @@ internal class RequestSender<T>
 
         var uriBuilder = new UriBuilder(new Uri(template))
         {
-            Query = nvc. ToString()
+            Query = nvc.ToString()
         };
         return uriBuilder.Uri;
     }

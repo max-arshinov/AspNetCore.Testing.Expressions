@@ -37,7 +37,7 @@ public class WeatherForecastController : ControllerBase
         return GetForecast();
     }
 
-    [HttpGet(nameof(GetWithRouteParam))]
+    [HttpGet("{id}")]
     public ActionResult<int> GetWithRouteParam([FromRoute] int id) => id;
 
     [HttpGet(nameof(GetWithQueryParam))]
