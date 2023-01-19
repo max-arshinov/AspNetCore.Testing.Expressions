@@ -55,4 +55,12 @@ public class WeatherForecastUnitTests: IClassFixture<WebApplicationFactory<Weath
         response = await client.GetAsync((WeatherForecastController c) => c.GetWithServiceDependency(null!));
         Assert.Equal(svc.GetType().Name, response);
     }
+    
+    [Fact]
+    public async Task GetAsync_WithoutParameters()
+    {
+        var client = CreateClient();
+        var response = await client.GetAsync((WeatherForecastController c) => c.GetAsync());
+        Assert.Equal(5, response?.Count());
+    }
 }

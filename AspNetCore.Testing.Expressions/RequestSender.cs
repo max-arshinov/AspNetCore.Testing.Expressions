@@ -96,7 +96,7 @@ internal class RequestSender<T>
     {
         if (response.IsSuccessStatusCode) return;
         var errorMessage = $"Server returned {(int)response.StatusCode}: {response.StatusCode}";
-        Dictionary<string, object> data = null;
+
         try
         {
             var content = await response.Content.ReadAsStringAsync();

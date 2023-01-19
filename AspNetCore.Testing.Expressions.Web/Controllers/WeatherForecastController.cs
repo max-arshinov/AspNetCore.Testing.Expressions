@@ -37,6 +37,12 @@ public class WeatherForecastController : ControllerBase
         return GetForecast();
     }
 
+    [HttpGet(nameof(GetAsync))]
+    public async Task<ActionResult<IEnumerable<WeatherForecast>>> GetAsync()
+    {
+        return GetForecast();
+    }
+    
     [HttpGet("{id}")]
     public ActionResult<int> GetWithRouteParam([FromRoute] int id) => id;
 

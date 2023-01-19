@@ -1,9 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>AspNetCore.Testing.Expressions</PackageId>
+        <IsPackable>true</IsPackable>
+        <Version>0.1.1</Version>
+        <Authors>Max Arshinov</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/max-arshinov/AspNetCore.Testing.Expressions</RepositoryUrl>
+        <Description>
+            Get intellisense support for your WebApplicationFactory-based tests.
+
+            ```csharp
+            var prm = 1;
+            var response = await client.GetAsync((WeatherForecastController c) => c.GetWithRouteParam(prm));
+            ```
+        </Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Update="README.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>
