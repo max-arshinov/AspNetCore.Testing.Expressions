@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using static System.String;
 
 namespace AspNetCore.Testing.Expressions;
 
@@ -17,7 +18,7 @@ internal class RequestSender<T>
         _httpClient = httpClient;
     }
 
-    public async Task<TResponse?> Send<TResponse>(LambdaExpression expression)
+    public async Task<TResponse?> SendAsync<TResponse>(LambdaExpression expression)
     {
         var body = expression.Body as MethodCallExpression;
         if (body == null)
@@ -26,14 +27,16 @@ internal class RequestSender<T>
         }
 
         var (template, httpMethod, methodInfo) = GetTemplate(body);
+        var uri = GetUri(template, methodInfo, body.Arguments.ToArray());
+        
         var response = await _httpClient.SendAsync(new HttpRequestMessage
         {
-            RequestUri = GetUri(template, methodInfo, expression.Parameters),
+            RequestUri = uri,
             Method = httpMethod,
             Content = GetHttpContent(methodInfo)
         });
 
-        CheckStatusCode(response);
+        await CheckStatusCodeAsync(response);
         
         var responseBody = await response.Content.ReadFromJsonAsync<TResponse>();
         return responseBody;
@@ -43,45 +46,57 @@ internal class RequestSender<T>
     {
         return null;
     }
+    
+    private static object? InvokeExpression(Expression e, Type returnType) => Expression
+        .Lambda(typeof (Func<>).MakeGenericType(returnType), e)
+        .Compile()
+        .DynamicInvoke();
 
     private static Uri GetUri(string template, MethodInfo methodInfo, 
-        IReadOnlyCollection<ParameterExpression> parameterExpressions)
+        Expression[] parameterExpressions)
     {
         var parameters = methodInfo
             .GetParameters()
-            .Where(x => x.GetCustomAttribute<FromQueryAttribute>() != null || 
-                        x.GetCustomAttribute<FromRouteAttribute>() != null);
+            .Where(x => x.GetCustomAttribute<FromRouteAttribute>() != null ||
+                        x.GetCustomAttribute<FromQueryAttribute>() != null || 
+                        x.GetCustomAttribute<FromBodyAttribute>() != null)
+            .ToArray();
 
-        var nvc = new NameValueCollection();
-        foreach (var parameter in parameters)
+        var nvc = HttpUtility.ParseQueryString(Empty);
+
+        for(var i = 0; i < parameters.Length; i ++)
         {
+            var parameter = parameters[i];
             var routeAttr = parameter.GetCustomAttribute<FromRouteAttribute>();
             var queryAttr = parameter.GetCustomAttribute<FromQueryAttribute>();
 
             if (routeAttr != null)
             {
-                template = template.Replace($"[{parameter.Name}]", "TODO:FROM-EXPRESSION");
+                var expressionValue = InvokeExpression(parameterExpressions[i], parameter.ParameterType);
+                template = template.Replace($"[{parameter.Name}]", expressionValue?.ToString() ?? "");
             }
             if (queryAttr != null)
             {
-                nvc[parameter.Name] = "TODO:FROM-EXPRESSION";
+                var expressionValue = InvokeExpression(parameterExpressions[i], parameter.ParameterType);
+                nvc[parameter.Name] = expressionValue?.ToString() ?? "";
             }
         }
 
         var uriBuilder = new UriBuilder(new Uri(template))
         {
-            Query = nvc.ToString()
+            Query = nvc. ToString()
         };
         return uriBuilder.Uri;
     }
 
-    private static void CheckStatusCode(HttpResponseMessage response)
+    private static async Task CheckStatusCodeAsync(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode) return;
-        var errorMessage = $"Server returned {response.StatusCode}";
+        var errorMessage = $"Server returned {(int)response.StatusCode}: {response.StatusCode}";
+        Dictionary<string, object> data = null;
         try
         {
-            var content = response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
             errorMessage += $": {content}";
         }
         catch (Exception e)

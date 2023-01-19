@@ -37,14 +37,16 @@ public class WeatherForecastController : ControllerBase
         return GetForecast();
     }
 
-    [HttpGet(nameof(Get))]
-    public ActionResult<IEnumerable<WeatherForecast>> Get(
-        [FromServices] IService service,
-        [FromRoute] int id,
-        [FromQuery] string q1,
-        [FromQuery] SomeFilters filters
-        ) => Get();
+    [HttpGet(nameof(GetWithRouteParam))]
+    public ActionResult<int> GetWithRouteParam([FromRoute] int id) => id;
 
+    [HttpGet(nameof(GetWithQueryParam))]
+    public ActionResult<string> GetWithQueryParam([FromQuery] string q1) => q1;
+
+    [HttpGet(nameof(GetWithServiceDependency))]
+    public ActionResult<string> GetWithServiceDependency([FromServices] IService service) => 
+        service?.GetType().Name ?? "";
+    
     [HttpPost]
     public IActionResult Post() => Ok();
     

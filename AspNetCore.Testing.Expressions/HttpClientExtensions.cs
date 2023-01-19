@@ -13,7 +13,7 @@ public static class HttpClientExtensions
 
     public static Task<TResponse?> GetAsync<TController, TResponse>(this HttpClient httpClient,
         Expression<Func<TController, ActionResult<TResponse>>> expression) =>
-        new RequestSender<TController>(httpClient).Send<TResponse>(expression);
+        new RequestSender<TController>(httpClient).SendAsync<TResponse>(expression);
 
     public static Task<TResponse?> GetAsync<TController, TResponse>(this HttpClient httpClient, 
         Expression<Func<TController, TResponse>> expression)
