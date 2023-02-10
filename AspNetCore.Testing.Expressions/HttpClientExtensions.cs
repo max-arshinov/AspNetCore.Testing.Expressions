@@ -5,24 +5,19 @@ namespace AspNetCore.Testing.Expressions;
 
 public static class HttpClientExtensions
 {
-    public static Task<TResponse?> GetAsync<TController, TResponse>(this HttpClient httpClient, 
+    public static Task<TResponse?> SendAsync<TController, TResponse>(this HttpClient httpClient, 
         Expression<Func<TController, Task<ActionResult<TResponse>>>> expression) =>
-        new RequestSender<TController>(httpClient).SendAsync<TResponse>(expression);
+        new ControllerClient<TController>(httpClient).DoSendAsync<TResponse>(expression);
 
-    public static Task<TResponse?> GetAsync<TController, TResponse>(this HttpClient httpClient,
+    public static Task<TResponse?> SendAsync<TController, TResponse>(this HttpClient httpClient,
         Expression<Func<TController, ActionResult<TResponse>>> expression) =>
-        new RequestSender<TController>(httpClient).SendAsync<TResponse>(expression);
+        new ControllerClient<TController>(httpClient).DoSendAsync<TResponse>(expression);
 
-    public static Task<TResponse?> GetAsync<TController, TResponse>(this HttpClient httpClient, 
-        Expression<Func<TController, TResponse>> expression)
-    {
-        throw new NotImplementedException();
-    }
+    public static Task<TResponse?> SendAsync<TController, TResponse>(this HttpClient httpClient, 
+        Expression<Func<TController, TResponse>> expression) =>
+        new ControllerClient<TController>(httpClient).DoSendAsync<TResponse>(expression);
 
-    public static Task<TResponse?> GetAsync<TController, TResponse>(this HttpClient httpClient, 
-        Expression<Func<TController, Task<TResponse>>> expression)
-    {
-        throw new NotImplementedException();
-    }
-
+    public static Task<TResponse?> SendAsync<TController, TResponse>(this HttpClient httpClient, 
+        Expression<Func<TController, Task<TResponse>>> expression) =>
+        new ControllerClient<TController>(httpClient).DoSendAsync<TResponse>(expression);
 }

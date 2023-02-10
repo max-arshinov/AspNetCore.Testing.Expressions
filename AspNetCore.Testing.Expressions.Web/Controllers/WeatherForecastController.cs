@@ -52,9 +52,9 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(nameof(GetWithServiceDependency))]
     public ActionResult<string> GetWithServiceDependency([FromServices] IService service) => 
         service?.GetType().Name ?? "";
-    
+
     [HttpPost]
-    public IActionResult Post() => Ok();
+    public ActionResult<string> Post([FromBody]SomePararms prms) => prms.Param;
     
     [HttpPut]
     public IActionResult Put() => Ok();

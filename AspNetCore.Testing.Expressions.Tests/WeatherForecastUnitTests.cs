@@ -4,63 +4,62 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;
 
-public class WeatherForecastUnitTests: IClassFixture<WebApplicationFactory<WeatherForecastController>>
+public class WeatherForecastUnitTests: WebAppFactoryTestsBase<WeatherForecastController>
 {
-    private readonly WebApplicationFactory<WeatherForecastController> _factory;
-
-    public WeatherForecastUnitTests(WebApplicationFactory<WeatherForecastController> factory)
+    public WeatherForecastUnitTests(WebApplicationFactory<WeatherForecastController> factory) : base(factory)
     {
-        _factory = factory;
-    }
-
-    private HttpClient CreateClient()
-    {
-        return _factory.CreateClient();
     }
     
     [Fact]
     public async Task Get_WithoutParameters()
     {
-        var client = CreateClient();
-        var response = await client.GetAsync((WeatherForecastController c) => c.Get());
+        var response = await ControllerClient.SendAsync(c => c.Get());
         Assert.Equal(5, response?.Count());
     }
 
     [Fact]
     public async Task Get_WithRouteParameter()
     {
-        var client = _factory.CreateClient();
         var prm = 1;
-        var response = await client.GetAsync((WeatherForecastController c) => c.GetWithRouteParam(prm));
+        var response = await ControllerClient.SendAsync(c => c.GetWithRouteParam(prm));
         Assert.Equal(prm, response);
     }
     
     [Fact]
     public async Task Get_WithQueryParameter()
     {
-        var client = _factory.CreateClient();
         var prm = "q1";
-        var response = await client.GetAsync((WeatherForecastController c) => c.GetWithQueryParam(prm));
+        var response = await ControllerClient.SendAsync(c => c.GetWithQueryParam(prm));
         Assert.Equal(prm, response);
     }
     
     [Fact]
     public async Task Get_WithServiceParameter()
     {
-        var client = _factory.CreateClient();
         var svc = new Service();
-        var response = await client.GetAsync((WeatherForecastController c) => c.GetWithServiceDependency(svc));
+        var response = await ControllerClient.SendAsync(c => c.GetWithServiceDependency(svc));
         Assert.Equal(svc.GetType().Name, response);
         
-        response = await client.GetAsync((WeatherForecastController c) => c.GetWithServiceDependency(null!));
+        response = await ControllerClient.SendAsync(c => c.GetWithServiceDependency(null!));
         Assert.Equal(svc.GetType().Name, response);
     }
     
     [Fact]
     public async Task GetAsync_WithoutParameters()
     {
-        var client = CreateClient();
-        var response = await client.GetAsync((WeatherForecastController c) => c.GetAsync());
+        var response = await ControllerClient.SendAsync(c => c.GetAsync());
         Assert.Equal(5, response?.Count());
+    }
+
+    [Fact]
+    public async Task Post_WithFromBody()
+    {
+        var prm = new SomePararms()
+        {
+            Param = "Param"
+        };
+        
+        var response = await ControllerClient.SendAsync(c => c.Post(prm));
+        Assert.Equal(prm.Param, response);
     }
 }
