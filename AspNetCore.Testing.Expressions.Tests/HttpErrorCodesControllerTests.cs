@@ -1,5 +1,5 @@
+using System.Net;
 using AspNetCore.Testing.Expressions.Web.Controllers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;
@@ -11,11 +11,24 @@ public class HttpErrorCodesControllerTests: WebAppFactoryTestsBase<HttpErrorCode
     }
 
     [Fact]
-    public async Task BadRequest_ThrowsBadHttpRequestException()
+    public async Task BadRequest_ThrowsHttpRequestException_BadRequestStatusCode()
     {
-        await Assert.ThrowsAsync<BadHttpRequestException>(async () =>
+        var e = await Assert.ThrowsAsync<HttpRequestException>(async () =>
         {
-            await ControllerClient.SendAsync(x => x.BadRequest());
+            await ControllerClient.SendAsync(x => x.Get400());
         });
+        
+        Assert.Equal(HttpStatusCode.BadRequest, e.StatusCode);
+    }
+    
+    [Fact]
+    public async Task NotFound_ThrowsBadHttpRequestException_NotFoundStatusCode()
+    {
+        var e = await Assert.ThrowsAsync<HttpRequestException>(async () =>
+        {
+            await ControllerClient.SendAsync(x => x.Get404());
+        });
+        
+        Assert.Equal(HttpStatusCode.NotFound, e.StatusCode);
     }
 }

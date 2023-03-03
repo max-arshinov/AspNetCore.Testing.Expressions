@@ -129,28 +129,28 @@ public class ControllerClient<TController>
     private static async Task CheckStatusCodeAsync(HttpResponseMessage response)
     {
         if (response.IsSuccessStatusCode) return;
-        var errorMessage = $"Server returned {(int)response.StatusCode}: {response.StatusCode}";
+        var errorMessage = $"HTTP Code {(int)response.StatusCode} ({SplitCamelCase(response.StatusCode.ToString())})";
 
         try
         {
             var content = await response.Content.ReadAsStringAsync();
-            errorMessage += $": {content}";
+            if (!IsNullOrWhiteSpace(content))
+            {
+                errorMessage += $": {content}";
+            }
         }
         catch (Exception e)
         {
-            throw GetHttpException(response, errorMessage, e);
+            throw new HttpRequestException(errorMessage, e, response.StatusCode);
         }
 
-        throw GetHttpException(response, errorMessage);
+        
+        throw new HttpRequestException(errorMessage, null, response.StatusCode);
     }
-
-    private static Exception GetHttpException(HttpResponseMessage response, string errorMessage, Exception? e = null)
+    
+    private static string SplitCamelCase(string input)
     {
-        return response.StatusCode == HttpStatusCode.BadRequest 
-            ? e == null 
-                ? new BadHttpRequestException(errorMessage)
-                : new BadHttpRequestException(errorMessage, e)
-            : new HttpRequestException(errorMessage, e);
+        return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
     }
 
     private static (string, HttpMethod, MethodInfo) GetTemplate(MethodCallExpression body)

@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.Expressi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.Expressions.Tests", "AspNetCore.Testing.Expressions.Tests\AspNetCore.Testing.Expressions.Tests.csproj", "{78962E00-8689-49F3-8D3F-BEA33DF8B97B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.MoqWebApplicationFactory", "AspNetCore.Testing.MoqWebApplicationFactory\AspNetCore.Testing.MoqWebApplicationFactory.csproj", "{39AB038A-BF63-468B-8FC3-507CF780E7B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Testing.MoqWebApplicationFactory.Tests", "AspNetCore.Testing.MoqWebApplicationFactory.Tests\AspNetCore.Testing.MoqWebApplicationFactory.Tests.csproj", "{35E8F23A-7830-464E-8689-2DCDEB339E7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,18 @@ Global
 		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78962E00-8689-49F3-8D3F-BEA33DF8B97B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AB038A-BF63-468B-8FC3-507CF780E7B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AB038A-BF63-468B-8FC3-507CF780E7B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AB038A-BF63-468B-8FC3-507CF780E7B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AB038A-BF63-468B-8FC3-507CF780E7B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35E8F23A-7830-464E-8689-2DCDEB339E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35E8F23A-7830-464E-8689-2DCDEB339E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35E8F23A-7830-464E-8689-2DCDEB339E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35E8F23A-7830-464E-8689-2DCDEB339E7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{63918B5B-D093-4FFE-89EB-611399D25960} = {A5568962-395E-4248-B532-BC37CA29F345}
 		{78962E00-8689-49F3-8D3F-BEA33DF8B97B} = {A5568962-395E-4248-B532-BC37CA29F345}
+		{35E8F23A-7830-464E-8689-2DCDEB339E7B} = {A5568962-395E-4248-B532-BC37CA29F345}
 	EndGlobalSection
 EndGlobal
