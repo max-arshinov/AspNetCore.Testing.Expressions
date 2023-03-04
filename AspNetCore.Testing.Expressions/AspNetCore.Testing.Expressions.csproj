@@ -9,7 +9,7 @@
     <PropertyGroup>
         <PackageId>AspNetCore.Testing.Expressions</PackageId>
         <IsPackable>true</IsPackable>
-        <Version>0.1.7</Version>
+        <Version>0.1.8</Version>
         <Authors>Max Arshinov</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/max-arshinov/AspNetCore.Testing.Expressions</RepositoryUrl>

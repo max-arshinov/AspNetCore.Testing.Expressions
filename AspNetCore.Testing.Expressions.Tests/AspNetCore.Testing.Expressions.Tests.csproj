@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.10.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.13" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
@@ -25,6 +26,14 @@
     <ItemGroup>
       <ProjectReference Include="..\AspNetCore.Testing.Expressions.Web\AspNetCore.Testing.Expressions.Web.csproj" />
       <ProjectReference Include="..\AspNetCore.Testing.Expressions\AspNetCore.Testing.Expressions.csproj" />
+      <ProjectReference Include="..\AspNetCore.Testing.MoqWebApplicationFactory.Tests\AspNetCore.Testing.MoqWebApplicationFactory.Tests.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="YamlTests.yml">
+        <DependentUpon>YamlTests.cs</DependentUpon>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
