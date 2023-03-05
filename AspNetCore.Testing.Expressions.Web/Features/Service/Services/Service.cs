@@ -1,4 +1,4 @@
-using AspNetCore.Testing.Expressions.Web.Services;
+namespace AspNetCore.Testing.Expressions.Web.Features.Service.Services;
 
 public class Service: IService
 {

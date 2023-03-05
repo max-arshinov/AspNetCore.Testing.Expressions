@@ -1,12 +1,18 @@
-using AspNetCore.Testing.Expressions.Web.Controllers;
-using AspNetCore.Testing.MoqWebApplicationFactory;
+using AspNetCore.Testing.Expressions;
+using AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
+using FluentAssertions;
 
-namespace AspNetCore.Testing.Expressions.Tests;
+namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;
 
 public abstract class ProductControllerTestsBase<T>: 
-    ControllerTestsBase<ProductController, T> 
-    where T : ITestContext, new()
+    ControllerTestsBase<ProductController, T>,
+    IClassFixture<T> 
+    where T : class, IHttpClientFactory
 {
+    protected ProductControllerTestsBase(T http) : base(http)
+    {
+    }
+
     [Fact]
     public async Task LoadMany_GetById_CanFetchAllProductsFromGetAll()
     {

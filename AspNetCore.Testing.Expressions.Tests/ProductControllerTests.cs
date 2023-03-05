@@ -1,4 +1,5 @@
-using AspNetCore.Testing.Expressions.Web.Controllers;
+using AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;

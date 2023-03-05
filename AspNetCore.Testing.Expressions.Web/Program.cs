@@ -1,5 +1,5 @@
-using AspNetCore.Testing.Expressions.Web.Services;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
+using AspNetCore.Testing.Expressions.Web.Features.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IService, Service>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

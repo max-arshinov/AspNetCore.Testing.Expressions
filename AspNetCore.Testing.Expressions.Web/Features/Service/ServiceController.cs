@@ -1,7 +1,7 @@
-using AspNetCore.Testing.Expressions.Web.Services;
+using AspNetCore.Testing.Expressions.Web.Features.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AspNetCore.Testing.Expressions.Web.Controllers;
+namespace AspNetCore.Testing.Expressions.Web.Features.Service;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,4 +1,4 @@
-using AspNetCore.Testing.Expressions.Web.Controllers;
+using AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Moq.DataAttributes;
 

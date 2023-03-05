@@ -1,4 +1,4 @@
-namespace AspNetCore.Testing.Expressions.Web.Models;
+namespace AspNetCore.Testing.Expressions.Web.Features.WatherForecast;
 
 public class WeatherForecast
 {

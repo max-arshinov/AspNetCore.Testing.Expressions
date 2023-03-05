@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AspNetCore.Testing.Expressions.Web.Controllers;
+namespace AspNetCore.Testing.Expressions.Web.Features.HttpErrorCodes;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,4 +1,4 @@
-using AspNetCore.Testing.Expressions.Web.Services;
+using AspNetCore.Testing.Expressions.Web.Features.Service.Services;
 
 namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;
 
@@ -24,13 +24,14 @@ public class MoqWebApplicationFactoryTests : IClassFixture<MoqWebApplicationFact
     [Fact]
     public async Task MockService_ReturnsAsConfigured2()
     {
-        var client = _moqWebApplicationFactoryExample.WithMocks(m =>
-            {
-                m.Mock<IService>()
-                    .Setup(x => x.GetString())
-                    .Returns("Get Another String");
-            })
-            .CreateClient();
+        var (factory, _) = _moqWebApplicationFactoryExample.WithMocks(m =>
+        {
+            m.Mock<IService>()
+                .Setup(x => x.GetString())
+                .Returns("Get Another String");
+        });
+
+        var client = factory.CreateClient();
 
 
         var res = await client.GetAsync("Service");

@@ -1,14 +1,14 @@
 namespace AspNetCore.Testing.MoqWebApplicationFactory;
 
 public abstract class HttpClientTestsBase<T>
-    where T: ITestContext
+    where T: IHttpClientFactory
 {
-    protected readonly T TestContext;
+    protected readonly T HttpClientFactory;
 
-    public HttpClientTestsBase(T testContext)
+    public HttpClientTestsBase(T http)
     {
-        TestContext = testContext;
+        HttpClientFactory = http;
     }
 
-    protected HttpClient CreateHttpClient() => TestContext.CreateHttpClient();
+    protected HttpClient CreateHttpClient(string name = "") => HttpClientFactory.CreateClient(name);
 }

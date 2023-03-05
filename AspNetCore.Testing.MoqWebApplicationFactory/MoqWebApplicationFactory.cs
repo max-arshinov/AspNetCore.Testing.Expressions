@@ -9,9 +9,9 @@ namespace AspNetCore.Testing.MoqWebApplicationFactory;
 public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntryPoint>
     where TEntryPoint : class
 {
-    public IMockEngine Mocks { get; } = new MockEngine();
+    private readonly IMockProvider Mocks = new MockProvider();
 
-    protected virtual void ConfigureMocks(IMockEngine mocks) { }
+    protected virtual void ConfigureMocks(IMockProvider mocks) { }
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -19,40 +19,40 @@ public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntry
         ConfigureMocks(Mocks);
         builder.ConfigureTestServices(services =>
         {
-            foreach (var mock in Mocks.Mocks)
+            foreach (var mock in Mocks)
             {
-                services.AddSingleton(mock.Key, (object)((dynamic)mock.Value).Object);
+                services.AddSingleton(mock.Key, mock.Value.Object);
             }
 
-            foreach (var mock in Mocks.Mocks)
+            foreach (var mock in Mocks)
             {
                 var descriptor =
                     new ServiceDescriptor(
                         mock.Key,
-                        (object)((dynamic)mock.Value).Object);
+                        mock.Value.Object);
             
                 services.Replace(descriptor);
             }
         });
     }
 
-    public WebApplicationFactory<TEntryPoint> WithMocks(Action<IMockEngine> setupMocks)
+    public (WebApplicationFactory<TEntryPoint>, IMockProvider) WithMocks(Action<IMockProvider> setupMocks)
     {
-        IMockEngine engine = new MockEngine();
-        setupMocks(engine);
+        IMockProvider provider = new MockProvider();
+        setupMocks(provider);
         
-        return WithWebHostBuilder(builder => builder.ConfigureTestServices(
+        return (WithWebHostBuilder(builder => builder.ConfigureTestServices(
             services =>
             {
-                foreach (var mock in engine.Mocks)
+                foreach (var mock in provider)
                 {
                     var descriptor =
                         new ServiceDescriptor(
                             mock.Key,
-                            (object)((dynamic)mock.Value).Object);
+                            mock.Value.Object);
     
                     services.Replace(descriptor);
                 }
-            }));
+            })), provider);
     }
 }

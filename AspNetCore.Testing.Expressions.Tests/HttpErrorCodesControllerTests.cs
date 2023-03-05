@@ -1,5 +1,5 @@
 using System.Net;
-using AspNetCore.Testing.Expressions.Web.Controllers;
+using AspNetCore.Testing.Expressions.Web.Features.HttpErrorCodes;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;

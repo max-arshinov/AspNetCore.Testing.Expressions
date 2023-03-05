@@ -1,4 +1,4 @@
-namespace AspNetCore.Testing.Expressions.Web.Controllers;
+namespace AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
 
 public class ProductDetails
 {

@@ -8,7 +8,7 @@ namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;
 public class JsonDataAttribute : DataAttribute
 {
     private readonly string _filePath;
-    private readonly string _propertyName;
+    private readonly string? _propertyName;
 
     /// <summary>
     /// Load data from a JSON file as the data source for a theory
@@ -22,7 +22,7 @@ public class JsonDataAttribute : DataAttribute
     /// </summary>
     /// <param name="filePath">The absolute or relative path to the JSON file to load</param>
     /// <param name="propertyName">The name of the property on the JSON file that contains the data for the test</param>
-    public JsonDataAttribute(string filePath, string propertyName)
+    public JsonDataAttribute(string filePath, string? propertyName)
     {
         _filePath = filePath;
         _propertyName = propertyName;

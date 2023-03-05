@@ -6,34 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.13" />
-      <PackageReference Include="Moq" Version="4.18.4" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="MockEngine.cs">
-        <DependentUpon>IMockEngine.cs</DependentUpon>
-      </Compile>
-      <Compile Update="WafTestContext.cs">
-        <DependentUpon>ITestContext.cs</DependentUpon>
-      </Compile>
-      <Compile Update="HttpTestContext.cs">
-        <DependentUpon>ITestContext.cs</DependentUpon>
-      </Compile>
-      <Compile Update="ControllerWafTestContext.cs">
-        <DependentUpon>ITestContext.cs</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\AspNetCore.Testing.Expressions\AspNetCore.Testing.Expressions.csproj" />
-    </ItemGroup>
-
     <PropertyGroup>
         <PackageId>AspNetCore.Testing.MoqWebApplicationFactory</PackageId>
         <IsPackable>true</IsPackable>
-        <Version>0.1.1</Version>
+        <Version>0.1.2</Version>
         <Authors>Max Arshinov</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/max-arshinov/AspNetCore.Testing.Expressions</RepositoryUrl>
@@ -42,4 +18,12 @@
         </Description>
     </PropertyGroup>
     
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.13" />
+      <PackageReference Include="Moq" Version="4.18.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspNetCore.Testing.Expressions\AspNetCore.Testing.Expressions.csproj" />
+    </ItemGroup>
 </Project>

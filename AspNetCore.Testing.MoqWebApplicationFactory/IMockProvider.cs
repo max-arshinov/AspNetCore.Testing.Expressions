@@ -2,9 +2,7 @@ using Moq;
 
 namespace AspNetCore.Testing.MoqWebApplicationFactory;
 
-public interface IMockEngine
+public interface IMockProvider: IEnumerable<KeyValuePair<Type, Mock>>
 {
     Mock<T> Mock<T>() where T : class;
-    
-    IDictionary<Type, object> Mocks { get; }
 }

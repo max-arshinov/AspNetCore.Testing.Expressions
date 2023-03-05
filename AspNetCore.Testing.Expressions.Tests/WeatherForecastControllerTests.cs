@@ -1,5 +1,5 @@
-using AspNetCore.Testing.Expressions.Web.Controllers;
-using AspNetCore.Testing.Expressions.Web.Models;
+using AspNetCore.Testing.Expressions.Web.Features.Service.Services;
+using AspNetCore.Testing.Expressions.Web.Features.WatherForecast;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;

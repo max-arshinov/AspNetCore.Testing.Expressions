@@ -1,4 +1,4 @@
-using AspNetCore.Testing.Expressions.Web.Controllers;
+using AspNetCore.Testing.Expressions.Web.Features.CustomRoutes;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;
