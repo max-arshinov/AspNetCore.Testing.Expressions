@@ -27,6 +27,7 @@
       <ProjectReference Include="..\AspNetCore.Testing.Expressions.Web\AspNetCore.Testing.Expressions.Web.csproj" />
       <ProjectReference Include="..\AspNetCore.Testing.Expressions\AspNetCore.Testing.Expressions.csproj" />
       <ProjectReference Include="..\AspNetCore.Testing.MoqWebApplicationFactory.Tests\AspNetCore.Testing.MoqWebApplicationFactory.Tests.csproj" />
+      <ProjectReference Include="..\xUnit.DataAttributes\xUnit.DataAttributes.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,4 +37,12 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="ProductControllerHttpTests.cs">
+        <DependentUpon>ProductControllerTestsBase.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ProductControllerWafTests.cs">
+        <DependentUpon>ProductControllerTestsBase.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

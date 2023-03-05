@@ -1,5 +1,4 @@
 using AspNetCore.Testing.Expressions.Web.Controllers;
-using AspNetCore.Testing.MoqWebApplicationFactory.Tests;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;
@@ -11,7 +10,7 @@ public class ProductControllerTests: WebAppFactoryTestsBase<ProductController>
     }
 
     [Fact]
-    public async Task Test1()
+    public async Task GetById_CanFetchAllProductsFromGetAll()
     {
         var products = (await ControllerClient.SendAsync(x => x.Get()))?.ToArray() ?? Array.Empty<ProductListItem>();
         products.Should().NotBeNull();
@@ -35,7 +34,7 @@ public class ProductControllerTests: WebAppFactoryTestsBase<ProductController>
     }
     
     [Fact]
-    public async Task Test2()
+    public async Task LoadMany_GetById_CanFetchAllProductsFromGetAll()
     {
         var res = await ControllerClient
             .SendAsync(c => c.Get())
@@ -50,3 +49,4 @@ public class ProductControllerTests: WebAppFactoryTestsBase<ProductController>
         });
     }    
 }
+

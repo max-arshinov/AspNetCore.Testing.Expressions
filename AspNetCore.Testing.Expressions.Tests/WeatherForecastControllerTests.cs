@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;
 
-public class WeatherForecastUnitTests: WebAppFactoryTestsBase<WeatherForecastController>
+public class WeatherForecastControllerTests: WebAppFactoryTestsBase<WeatherForecastController>
 {
-    public WeatherForecastUnitTests(WebApplicationFactory<WeatherForecastController> factory) : base(factory)
+    public WeatherForecastControllerTests(WebApplicationFactory<WeatherForecastController> factory) : base(factory)
     {
     }
     

@@ -9,22 +9,22 @@ namespace AspNetCore.Testing.MoqWebApplicationFactory;
 public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntryPoint>
     where TEntryPoint : class
 {
-    private MockEngine _mocks = new MockEngine();
+    public IMockEngine Mocks { get; } = new MockEngine();
 
     protected virtual void ConfigureMocks(IMockEngine mocks) { }
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         base.ConfigureWebHost(builder);
-        ConfigureMocks(_mocks);
+        ConfigureMocks(Mocks);
         builder.ConfigureTestServices(services =>
         {
-            foreach (var mock in _mocks.Mocks)
+            foreach (var mock in Mocks.Mocks)
             {
                 services.AddSingleton(mock.Key, (object)((dynamic)mock.Value).Object);
             }
 
-            foreach (var mock in _mocks.Mocks)
+            foreach (var mock in Mocks.Mocks)
             {
                 var descriptor =
                     new ServiceDescriptor(

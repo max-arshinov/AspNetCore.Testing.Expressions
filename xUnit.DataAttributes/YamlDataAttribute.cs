@@ -4,7 +4,7 @@ using Xunit.Sdk;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;
+namespace Moq.DataAttributes;
 
 public class YamlDataAttribute : DataAttribute
 {
