@@ -11,7 +11,6 @@ public class ProductControllerWafTests :
     [Fact]
     public void A()
     {
-        TestContext.ConfigureMocks();
         var m = new Mock<IService>();
         m
             .Setup(x => x.GetString())

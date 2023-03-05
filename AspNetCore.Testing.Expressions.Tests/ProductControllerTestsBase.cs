@@ -10,7 +10,6 @@ public abstract class ProductControllerTestsBase<T>:
     [Fact]
     public async Task LoadMany_GetById_CanFetchAllProductsFromGetAll()
     {
-        Te
         var client = CreateControllerClient();
         var res = await client
             .SendAsync(c => c.Get())
