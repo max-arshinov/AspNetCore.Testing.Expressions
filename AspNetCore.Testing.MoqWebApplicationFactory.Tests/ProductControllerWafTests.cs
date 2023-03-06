@@ -5,9 +5,9 @@ using FluentAssertions;
 namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;
 
 public class ProductControllerWafTests :
-    ProductControllerTestsBase<ControllerMoqHttpClientFactory<ProductController>>
+    ProductControllerTestsBase<MoqHttpClientFactory<ProductController>>
 {
-    public ProductControllerWafTests(ControllerMoqHttpClientFactory<ProductController> http) : base(http)
+    public ProductControllerWafTests(MoqHttpClientFactory<ProductController> http) : base(http)
     {
     }
 
