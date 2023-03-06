@@ -1,5 +1,4 @@
 using AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
-using AspNetCore.Testing.Expressions.Web.Features.Service.Services;
 using FluentAssertions;
 
 namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;

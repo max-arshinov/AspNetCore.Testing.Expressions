@@ -7,9 +7,9 @@ public class MoqHttpClientFactory<TEntry> : MoqHttpClientFactory<TEntry, MoqWebA
 {
 }
 
-public class MoqHttpClientFactory<TEntry, TFactory>: IHttpClientFactory
+public class MoqHttpClientFactory<TEntry, TWebApplicationFactory>: IHttpClientFactory
     where TEntry : class
-    where TFactory: MoqWebApplicationFactory<TEntry>, new()
+    where TWebApplicationFactory: MoqWebApplicationFactory<TEntry>, new()
 {
     // private readonly TFactory _factory;
 
@@ -30,7 +30,7 @@ public class MoqHttpClientFactory<TEntry, TFactory>: IHttpClientFactory
     public void ConfigureMocks(string name, Action<IMockProvider> setupMocks)
     {
         if (name == null) throw new ArgumentNullException(nameof(name));
-        var (factory, provider) = new TFactory().WithMocks(setupMocks);
+        var (factory, provider) = new TWebApplicationFactory().WithMocks(setupMocks);
         // TODO: check why original factory is modified
         _clientFactories[name] = factory;
         _mocks[name] = provider;
@@ -38,5 +38,5 @@ public class MoqHttpClientFactory<TEntry, TFactory>: IHttpClientFactory
 
 
     public HttpClient CreateClient(string name = "") => 
-        (_clientFactories.GetValueOrDefault(name) ?? new TFactory()).CreateClient();
+        (_clientFactories.GetValueOrDefault(name) ?? new TWebApplicationFactory()).CreateClient();
 }
