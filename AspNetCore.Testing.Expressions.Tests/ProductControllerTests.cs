@@ -4,17 +4,18 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AspNetCore.Testing.Expressions.Tests;
 
-public class ProductControllerTests: WebAppFactoryTestsBase<ProductController>
+public class ProductControllerTests: WebAppFactoryTestsBase<ProductsController>
 {
-    public ProductControllerTests(WebApplicationFactory<ProductController> factory) : base(factory)
+    public ProductControllerTests(WebApplicationFactory<ProductsController> factory) : base(factory)
     {
     }
 
     [Fact]
     public async Task GetById_CanFetchAllProductsFromGetAll()
     {
-        var products = (await ControllerClient.SendAsync(x => x.Get()))?.ToArray() ?? Array.Empty<ProductListItem>();
-        products.Should().NotBeNull();
+        var products = await ControllerClient
+            .FetchArrayAsync(x => x.Get(new Paging()))
+            .NotNull();
         
         var productDetailTasks = products
             .Select(async x =>
@@ -24,8 +25,7 @@ public class ProductControllerTests: WebAppFactoryTestsBase<ProductController>
             })
             .ToList();
 
-        var productDetails =await Task.WhenAll(productDetailTasks);
-        
+        var productDetails = await Task.WhenAll(productDetailTasks);
 
         productDetails.Should().AllSatisfy(x =>
         {
@@ -38,7 +38,7 @@ public class ProductControllerTests: WebAppFactoryTestsBase<ProductController>
     public async Task LoadMany_GetById_CanFetchAllProductsFromGetAll()
     {
         var res = await ControllerClient
-            .SendAsync(c => c.Get())
+            .SendAsync(c => c.Get(new Paging()))
             .LoadMany(
                 p => ControllerClient.SendAsync(c => c.Get(p.Id)),
                 p => p.Id);

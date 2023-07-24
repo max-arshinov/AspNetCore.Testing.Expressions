@@ -4,9 +4,9 @@ using Moq.DataAttributes;
 
 namespace AspNetCore.Testing.Expressions.Tests;
 
-public class YamlTests: WebAppFactoryTestsBase<ProductController>
+public class YamlTests: WebAppFactoryTestsBase<ProductsController>
 {
-    public YamlTests(WebApplicationFactory<ProductController> factory) : base(factory)
+    public YamlTests(WebApplicationFactory<ProductsController> factory) : base(factory)
     {
     }
 

@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Refit" Version="6.3.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -15,5 +16,4 @@
         <DependentUpon>appsettings.json</DependentUpon>
       </Content>
     </ItemGroup>
-
 </Project>

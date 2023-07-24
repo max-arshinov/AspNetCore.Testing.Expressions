@@ -30,13 +30,40 @@ public class MoqHttpClientFactory<TEntry, TWebApplicationFactory>: IHttpClientFa
     public void ConfigureMocks(string name, Action<IMockProvider> setupMocks)
     {
         if (name == null) throw new ArgumentNullException(nameof(name));
-        var (factory, provider) = new TWebApplicationFactory().WithMocks(setupMocks);
-        // TODO: check why original factory is modified
-        _clientFactories[name] = factory;
+        IMockProvider provider = new MockProvider();
+        setupMocks(provider);
         _mocks[name] = provider;
     }
 
 
-    public HttpClient CreateClient(string name = "") => 
-        (_clientFactories.GetValueOrDefault(name) ?? new TWebApplicationFactory()).CreateClient();
+    public HttpClient CreateClient(string name = "") =>
+        (_clientFactories.GetValueOrDefault(name) ?? CreateNewClient(name)).CreateClient();
+
+    private WebApplicationFactory<TEntry> CreateNewClient(string name)
+    {
+        var defaultMockProvider = _mocks.GetValueOrDefault("");
+        var namedMockProvider = _mocks.GetValueOrDefault(name);
+
+        if (defaultMockProvider != null)
+        {
+            var mockProvider = namedMockProvider != null
+                ? defaultMockProvider.Merge(namedMockProvider)
+                : defaultMockProvider;
+            
+            _clientFactories[name] = new TWebApplicationFactory().WithMocks(mockProvider);
+        }
+        else
+        {
+            if (namedMockProvider != null)
+            {
+                _clientFactories[name] = new TWebApplicationFactory().WithMocks(namedMockProvider);
+            }
+            else
+            {
+                _clientFactories[name] = new TWebApplicationFactory();
+            }
+        }
+
+        return _clientFactories[name];
+    }
 }

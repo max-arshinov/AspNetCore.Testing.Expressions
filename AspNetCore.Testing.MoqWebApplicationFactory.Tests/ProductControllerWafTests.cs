@@ -1,45 +1,70 @@
+using System.Diagnostics.CodeAnalysis;
 using AspNetCore.Testing.Expressions.Web.Features.ProductCatalog;
-using FluentAssertions;
+using AspNetCore.Testing.Expressions.Web.Features.Service.Services;
+using Moq;
 
 namespace AspNetCore.Testing.MoqWebApplicationFactory.Tests;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class ProductControllerWafTests :
-    ProductControllerTestsBase<MoqHttpClientFactory<ProductController>>
+    ProductControllerTestsBase<MoqHttpClientFactory<ProductsController>>
 {
-    public ProductControllerWafTests(MoqHttpClientFactory<ProductController> http) : base(http)
-    {
-    }
+    private readonly string _stringMock = "__STRING__";
 
-    [Fact]
-    public async Task B()
+    public ProductControllerWafTests(MoqHttpClientFactory<ProductsController> http) : base(http)
     {
-    }
+        HttpClientFactory.ConfigureMocks(m =>
+        {
+            m.Mock<IProductRepository>()   
+                .Setup(x => x.GetList(It.IsAny<Paging>()))
+                .Returns(() => new []
+                {
+                    new ProductDetails()
+                    {
+                        Id = 1050
+                    },
+                    new ProductDetails()
+                    {
+                        Id = 2060
+                    },
+                    new ProductDetails()
+                    {
+                        Id = 3070
+                    }                        
+                });
 
-    [Fact]
-    public async Task A()
-    {
+            m.Mock<IService>()   
+                .Setup(x => x.GetString())
+                .Returns(() => _stringMock);            
+        });
+        
         HttpClientFactory.ConfigureMocks(nameof(A), m =>
         {
             m.Mock<IProductRepository>()   
-                .Setup(x => x.GetAll())
+                .Setup(x => x.GetList(It.IsAny<Paging>()))
                 .Returns(() => new []
                 {
                     new ProductDetails()
                     {
                         Id = 100500
+                    },
+                    new ProductDetails()
+                    {
+                        Id = 200600
                     }
                 });
         });
 
-        var namedClient = CreateControllerClient(nameof(A));
-        var res = (await namedClient.SendAsync(c => c.Get()))?.ToArray();
+        HttpClientFactory.ConfigureMocks(nameof(LoadMany_GetById_CanFetchAllProductsFromGetAll), m =>
+        {
+            var productRepo = m.Mock<IProductRepository>();
+            productRepo
+                .Setup(x => x.GetList(It.IsAny<Paging>()))
+                .Returns(() => new ProductRepository().GetList(new Paging()));
 
-        res.Should().HaveCount(1);
-        res?[0].Id.Should().Be(100500);
-        
-        var defaultClient = CreateControllerClient();
-        var res2 = (await defaultClient.SendAsync(c => c.Get()))?.ToArray();
-
-        res2.Should().HaveCount(2);
+            productRepo
+                .Setup(x => x.GetById(It.IsAny<int>()))
+                .Returns((int id) => new ProductRepository().GetById(id));
+        });
     }
 }

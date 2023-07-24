@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AspNetCore.Testing.MoqWebApplicationFactory;
 
-public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntryPoint>
+public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntryPoint> 
     where TEntryPoint : class
 {
     private readonly IMockProvider Mocks = new MockProvider();
@@ -36,12 +36,9 @@ public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntry
         });
     }
 
-    public (WebApplicationFactory<TEntryPoint>, IMockProvider) WithMocks(Action<IMockProvider> setupMocks)
+    public WebApplicationFactory<TEntryPoint> WithMocks(IMockProvider provider)
     {
-        IMockProvider provider = new MockProvider();
-        setupMocks(provider);
-        
-        return (WithWebHostBuilder(builder => builder.ConfigureTestServices(
+        return WithWebHostBuilder(builder => builder.ConfigureTestServices(
             services =>
             {
                 foreach (var mock in provider)
@@ -50,9 +47,17 @@ public class MoqWebApplicationFactory<TEntryPoint>: WebApplicationFactory<TEntry
                         new ServiceDescriptor(
                             mock.Key,
                             mock.Value.Object);
-    
+
                     services.Replace(descriptor);
                 }
-            })), provider);
+            }));
+    }
+    
+    public (WebApplicationFactory<TEntryPoint>, IMockProvider) WithMocks(Action<IMockProvider> setupMocks)
+    {
+        IMockProvider provider = new MockProvider();
+        setupMocks(provider);
+        
+        return (WithMocks(provider), provider);
     }
 }
