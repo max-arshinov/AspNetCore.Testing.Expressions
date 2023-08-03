@@ -40,7 +40,7 @@ public static class Extensions
 
 public class ListDetails<TList, TDetails>
 {
-    public TList List { get; internal set; }
+    public  TList List { get; internal set; }
     
     public TDetails Details { get; internal set; }
 }

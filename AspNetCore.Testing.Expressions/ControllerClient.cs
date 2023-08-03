@@ -9,8 +9,6 @@ namespace AspNetCore.Testing.Expressions;
 public class ControllerClient<TController>
 {
     public HttpClient HttpClient { get; }
-    
-    private const string ControllerTemplate = "[controller]";
 
     public ControllerClient(HttpClient httpClient)
     {
@@ -24,30 +22,23 @@ public class ControllerClient<TController>
     }
 
     public Task<TResponse?> SendAsync<TResponse>( 
-        Expression<Func<TController, Task<ActionResult<TResponse>>>> expression) =>
-        DoSendAsync<TResponse>(expression);
+        Expression<Func<TController, Task<ActionResult<TResponse>>>> expression, bool acceptErrorStatusCodes = false) =>
+        DoSendAsync<TResponse>(expression, acceptErrorStatusCodes);
 
     public Task<TResponse?> SendAsync<TResponse>(
-        Expression<Func<TController, ActionResult<TResponse>>> expression) =>
-        DoSendAsync<TResponse>(expression);
+        Expression<Func<TController, ActionResult<TResponse>>> expression, bool acceptErrorStatusCodes = false) =>
+        DoSendAsync<TResponse>(expression, acceptErrorStatusCodes);
 
     public Task<TResponse?> SendAsync<TResponse>( 
-        Expression<Func<TController, TResponse>> expression) =>
-        DoSendAsync<TResponse>(expression);
+        Expression<Func<TController, TResponse>> expression, bool acceptErrorStatusCodes = false) =>
+        DoSendAsync<TResponse>(expression, acceptErrorStatusCodes);
 
-    public async Task<TResponse?[]?> FetchArrayAsync<TResponse>( 
-        Expression<Func<TController, IEnumerable<TResponse>>> expression) =>
-        (await DoSendAsync<IEnumerable<TResponse>>(expression))?.ToArray();    
-    
-    public async Task<TResponse?[]?> FetchArrayAsync<TResponse>( 
-        Expression<Func<TController, Task<IEnumerable<TResponse>>>> expression) =>
-        (await DoSendAsync<IEnumerable<TResponse>>(expression))?.ToArray();       
-    
     public Task<TResponse?> SendAsync<TResponse>( 
-        Expression<Func<TController, Task<TResponse>>> expression) =>
-        DoSendAsync<TResponse>(expression);
+        Expression<Func<TController, Task<TResponse>>> expression, bool acceptErrorStatusCodes = false) =>
+        DoSendAsync<TResponse>(expression, acceptErrorStatusCodes);
     
-    internal async Task<TResponse?> DoSendAsync<TResponse>(LambdaExpression expression)
+    internal async Task<TResponse?> DoSendAsync<TResponse>(LambdaExpression expression, 
+        bool acceptErrorStatusCodes = false)
     {
         var body = expression.Body as MethodCallExpression;
         if (body == null)
@@ -58,7 +49,12 @@ public class ControllerClient<TController>
         var message = new RequestMessageBuilder().Build(body);
         var response = await HttpClient.SendAsync(message);
 
-        await CheckStatusCodeAsync(response, message.RequestUri!);
+        if (!acceptErrorStatusCodes)
+        {
+            await CheckStatusCodeAsync(response, message.RequestUri!);
+        }
+        
+
         if (response.StatusCode == HttpStatusCode.NoContent)
         {
             return default;
@@ -69,7 +65,15 @@ public class ControllerClient<TController>
         
         return responseBody;
     }
-
+    
+    public async Task<TResponse?[]?> FetchArrayAsync<TResponse>( 
+        Expression<Func<TController, IEnumerable<TResponse>>> expression, bool acceptErrorStatusCodes = false) =>
+        (await DoSendAsync<IEnumerable<TResponse>>(expression, acceptErrorStatusCodes))?.ToArray();    
+    
+    public async Task<TResponse?[]?> FetchArrayAsync<TResponse>( 
+        Expression<Func<TController, Task<IEnumerable<TResponse>>>> expression, bool acceptErrorStatusCodes = false) =>
+        (await DoSendAsync<IEnumerable<TResponse>>(expression, acceptErrorStatusCodes))?.ToArray();     
+    
     private static async Task CheckStatusCodeAsync(HttpResponseMessage response, Uri requestUri)
     {
         if (response.IsSuccessStatusCode) return;

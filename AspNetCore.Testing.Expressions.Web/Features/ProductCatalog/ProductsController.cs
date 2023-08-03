@@ -26,4 +26,7 @@ public class ProductsController : ControllerBase
 
     [HttpGet("{id}")]
     public ProductDetails? Get([FromRoute] int id) => _repository.GetById(id);
+
+    [HttpPost]
+    public string Post() => throw new NotImplementedException();
 }
